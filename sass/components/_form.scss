@@ -1,0 +1,97 @@
+.form {
+    &__group:not(:last-child) {
+        margin-bottom: 2rem;
+
+    }
+
+    &__input {
+        font-size: 1.5rem;
+        font-family: inherit;
+        color:inherit; // tag input โดยปกติไม่ inherit 
+        padding : 1.5rem 2rem;
+        border-radius: 2px; 
+        background-color: rgba($color-white, 0.5);
+        border:none; //ทำให้ไม่มีแวบๆตอน focus
+        border-bottom: 3px solid transparent; //ใส่รอตอน focus กันเขยิบ
+        width: 90%; 
+        display: block; //ผลัก label ไปข้างล่าง
+
+        &:focus { 
+            outline:none;  //เอา outline ออกตอนโฟกัส
+            box-shadow: 0 1rem 2rem rgba($color-black,0.1);
+            border-bottom: 3px solid $color-primary; //ใส่เส้นสีเขียวข้างล่าง
+        }
+
+        &:focus:invalid{
+            border-bottom: 3px solid $color-secondary-dark;
+        }
+
+        &::-webkit-input-placeholder{
+            color : $color-grey-dark-2; //เปลี่ยนสีใน placeholder
+        }
+
+    }
+    
+    &__label {
+        font-size:1.2rem;
+        font-weight: 700;
+        margin-left: 2rem;
+        margin-top: .7rem;
+        display: block; //จะใช้ box-model จัดการ margin
+        transition: all .3s;
+    }
+    
+    &__input:placeholder-shown + &__label{ 
+        //ใช้ adjacent sibling เลือกตัวถัดไป (label ต้องอยู่หลัง input ด้วย)
+        //แสดงผลเมื่อมี placeholder อยู่ หรือตอนที่ยังไม่กรอกข้อความลงไป
+        opacity: 0; //อยู่แต่มองไม่เห็น
+        visibility: hidden; //ทำให้หายไปเลย
+        transform:translateY(-4rem);
+    }
+
+    &__radio-group {
+        width: 49%;
+        display: inline-block;
+    }
+
+    &__radio-input {
+        display: none;
+    }
+
+    &__radio-label{
+        font-size: $default-font-size;
+        cursor: pointer; //ทำเป็นรูปมือคล้ายๆลิงค์
+        position: relative;
+        padding-left: 4.5rem; //ผลัก text ไปขวา เว้นที่ให้ปุ่ม CSS
+    }
+
+    &__radio-button {
+        height: 3rem;
+        width: 3rem;
+        border: 5px solid $color-primary;
+        border-radius: 50%;
+        display: inline-block; //ให้มีความกว้างของตัวเอง ไม่งั้นจะเป็นปุ่มรีๆ เพราะโดนเบียด
+        position: absolute;
+        left: 0;
+        top: -0.4rem;
+
+        &::after {
+            content: "";
+            display: block;
+            height: 1.3rem;
+            width: 1.3rem;
+            border-radius: 50%;
+            position: absolute; //parent มีการ define position แล้วถึงแม้จะเป็น absolute
+            top : 50%;
+            left: 50%;
+            transform: translate(-50%,-50%);
+            background-color: $color-primary;
+            opacity: 0;
+            transition: opacity .2s;
+        }        
+    }
+    //ตัวไหนถูกเช็ค จะชี้ไป label และชี้ไป buttonต่อ
+    &__radio-input:checked ~ &__radio-label &__radio-button::after{
+            opacity: 1;
+    }
+}
